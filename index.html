@@ -11,50 +11,251 @@
             --text-main: #e0e0e0;
             --text-sec: #a0a0a0;
             --accent: #e50914; /* Netflix Red */
+            --accent-hover: #b20710;
             --highlight: #ffd700;
+            --btn-sec: #333;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; }
-        
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
         /* Header */
-        header { background-color: #000; padding: 20px; text-align: center; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
+        header {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
         h1 { margin: 0; font-size: 1.5rem; }
         p.subtitle { color: var(--text-sec); font-size: 0.9rem; margin-top: 5px; }
 
         /* Controls */
-        .controls { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 15px; background-color: #181818; border-bottom: 1px solid #333; }
-        select, button { padding: 10px 15px; border-radius: 5px; border: 1px solid #444; background-color: #2b2b2b; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s; }
-        select:hover { background-color: #333; }
-        button.btn-random { background-color: var(--accent); border-color: var(--accent); font-weight: bold; }
-        button.btn-random:hover { background-color: #ff1f2b; transform: scale(1.05); }
-        button.btn-reset { background-color: transparent; border: 1px solid #666; }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 15px;
+            background-color: #181818;
+            border-bottom: 1px solid #333;
+        }
 
-        /* Grid */
-        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        select, button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #2b2b2b;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:hover { background-color: #333; }
+
+        button.btn-random {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+        }
         
-        /* Card */
-        .movie-card { background-color: var(--card-bg); border-radius: 8px; overflow: hidden; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: flex; flex-direction: column; border: 1px solid #333; }
-        .movie-card:hover { transform: translateY(-5px); border-color: #555; }
-        .card-header { padding: 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: flex-start; }
-        .movie-title { font-size: 1.1rem; font-weight: bold; color: #fff; }
-        .movie-year { font-size: 0.9rem; color: var(--highlight); font-weight: bold; }
-        .card-body { padding: 15px; flex-grow: 1; }
-        .meta-tag { display: inline-block; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-right: 5px; margin-bottom: 5px; background-color: #333; color: #ccc; }
+        button.btn-random:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        button.btn-reset {
+            background-color: transparent;
+            border: 1px solid #666;
+        }
+        button.btn-reset:hover { background-color: #333; }
+
+        /* Movie Grid */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Movie Card */
+        .movie-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #333;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            border-color: #555;
+            box-shadow: 0 8px 12px rgba(0,0,0,0.5);
+        }
+
+        .card-header {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 电影标题链接样式 */
+        .movie-title-link {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            transition: color 0.2s;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .movie-title-link:hover {
+            color: var(--highlight);
+            border-bottom: 1px solid var(--highlight);
+        }
+
+        .movie-year {
+            font-size: 0.9rem;
+            color: var(--highlight);
+            font-weight: bold;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        .card-body {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .meta-tag {
+            display: inline-block;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            background-color: #333;
+            color: #ccc;
+        }
+
         .tag-region { background-color: #1f4068; color: #a6c1ee; }
         .tag-mbti { background-color: #4a1c40; color: #eeb8dd; border: 1px solid #752a65; }
+
         .info-row { margin-bottom: 8px; font-size: 0.9rem; color: var(--text-sec); }
         .info-row strong { color: #ccc; }
-        .desc { font-size: 0.9rem; line-height: 1.4; color: #ddd; margin-top: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
-        /* Modal */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: #222; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%; text-align: center; border: 2px solid var(--accent); animation: popIn 0.3s ease-out; }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-title { font-size: 1.8rem; margin-bottom: 10px; color: var(--accent); }
-        .modal-info { margin-bottom: 20px; font-size: 1.1rem; }
+        .desc {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #ddd;
+            margin-top: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Modal (Random Pick) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #222;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-emoji { font-size: 4rem; margin-bottom: 10px; display: block; }
+        
+        .modal-title-link { 
+            font-size: 1.8rem; 
+            margin-bottom: 10px; 
+            color: var(--accent); 
+            display: inline-block;
+            border-bottom: 1px solid transparent;
+        }
+        .modal-title-link:hover {
+            border-bottom: 1px solid var(--accent);
+            opacity: 0.8;
+        }
+
+        .modal-info { margin-bottom: 20px; font-size: 1.1rem; color: var(--text-sec); }
         .modal-mbti { margin-top: 15px; font-weight: bold; color: var(--highlight); }
-        .close-btn { background-color: #444; margin-top: 20px; width: 100%; padding: 12px; border: none; color: white; border-radius: 5px; cursor: pointer; font-size: 1rem;}
-        .close-btn:hover { background-color: #555; }
-        .status-bar { text-align: center; padding: 10px; color: var(--text-sec); font-size: 0.9rem; }
+
+        /* Modal Buttons */
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        .btn-modal-action {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-change {
+            background-color: var(--btn-sec);
+            color: white;
+            border: 1px solid #555;
+        }
+        .btn-change:hover { background-color: #444; }
+
+        .btn-confirm {
+            background-color: var(--accent);
+            color: white;
+        }
+        .btn-confirm:hover { background-color: var(--accent-hover); }
+
+        .status-bar {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-sec);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -92,8 +293,8 @@
         <option value="2020-2025">2020 - 2025 (近期)</option>
         <option value="2010-2019">2010 - 2019</option>
         <option value="2000-2009">2000 - 2009</option>
-        <option value="1990-1999">1990 - 1999 (经典)</option>
-        <option value="pre-1990">1990 以前 (影史)</option>
+        <option value="1990-1999">1990 - 1999 </option>
+        <option value="pre-1990">1990 以前</option>
     </select>
 
     <select id="mbtiFilter" onchange="applyFilters()">
@@ -129,17 +330,25 @@
 </div>
 
 <div class="status-bar" id="statusBar">加载中...</div>
+
 <div class="movie-grid" id="movieGrid"></div>
 
 <div class="modal-overlay" id="modal">
     <div class="modal-content">
-        <div style="font-size: 3rem; margin-bottom: 10px;">🍿</div>
-        <h3>AI 推荐您今晚观看：</h3>
-        <h2 class="modal-title" id="modalTitle">电影标题</h2>
+        <span class="modal-emoji" id="modalIcon">🍿</span>
+        
+        <h3 style="color:#888; margin-bottom: 5px;">推荐您今晚观看：</h3>
+        
+        <div id="modalTitleContainer"></div>
+
         <div class="modal-info" id="modalMeta">年份 | 导演</div>
         <p class="desc" id="modalDesc">简介...</p>
-        <div class="modal-mbti" id="modalMbti">推荐给: MBTI</div>
-        <button class="close-btn" onclick="closeModal()">好的，我去看看</button>
+        <div class="modal-mbti" id="modalMbti">推荐给: INTJ</div>
+        
+        <div class="modal-actions">
+            <button class="btn-modal-action btn-change" onclick="helpMeChoose(true)">🔄 不喜欢？换一部</button>
+            <button class="btn-modal-action btn-confirm" onclick="closeModal()">👌 好的，我去看看</button>
+        </div>
     </div>
 </div>
 
@@ -148,13 +357,13 @@
 <script>
     let currentList = [];
 
-    // 初始化：确保数据文件已加载
+    // 初始化
     window.onload = () => {
         if (typeof allMovies !== 'undefined') {
             currentList = [...allMovies];
             applyFilters();
         } else {
-            document.getElementById('statusBar').innerText = "错误：无法加载 movies.js 数据文件";
+            document.getElementById('statusBar').innerText = "错误：无法加载 movies.js 数据文件。";
         }
     };
 
@@ -167,30 +376,28 @@
         if (typeof allMovies === 'undefined') return;
 
         currentList = allMovies.filter(movie => {
-            // Region Check
-            let regionMatch = (region === 'all') ? true : movie.region.includes(region);
+            const mRegion = movie["地区"] || "";
+            const mCategory = movie["类别"] || "";
+            const mYear = parseInt(movie["年份"]);
+            const mMbti = movie["推荐人群 (MBTI)"] || "";
+
+            let regionMatch = (region === 'all') ? true : mRegion.includes(region);
             if (region === '其他') {
                 const mainRegions = ['大陆', '香港', '台湾', '欧美'];
-                // 如果电影地区不包含上述主要地区，则视为“其他”
-                regionMatch = !mainRegions.some(r => movie.region.includes(r));
-                // 也可以根据实际数据中的'其他'标签判断
-                if (movie.region.includes('其他') || movie.region.includes('日本') || movie.region.includes('韩国') || movie.region.includes('印度')) regionMatch = true;
+                regionMatch = !mainRegions.some(r => mRegion.includes(r));
+                if (mRegion.includes('其他') || mRegion.includes('日本') || mRegion.includes('韩国') || mRegion.includes('印度')) regionMatch = true;
             }
 
-            // Genre Check
-            const genreMatch = (genre === 'all') ? true : movie.category.includes(genre);
+            const genreMatch = (genre === 'all') ? true : mCategory.includes(genre);
+            const mbtiMatch = (mbti === 'all') ? true : mMbti.includes(mbti);
 
-            // MBTI Check
-            const mbtiMatch = (mbti === 'all') ? true : movie.mbti.includes(mbti);
-
-            // Year Check
             let yearMatch = true;
             if (yearRange !== 'all') {
-                if (yearRange === 'pre-1990') yearMatch = movie.year < 1990;
-                else if (yearRange === '1990-1999') yearMatch = movie.year >= 1990 && movie.year <= 1999;
-                else if (yearRange === '2000-2009') yearMatch = movie.year >= 2000 && movie.year <= 2009;
-                else if (yearRange === '2010-2019') yearMatch = movie.year >= 2010 && movie.year <= 2019;
-                else if (yearRange === '2020-2025') yearMatch = movie.year >= 2020;
+                if (yearRange === 'pre-1990') yearMatch = mYear < 1990;
+                else if (yearRange === '1990-1999') yearMatch = mYear >= 1990 && mYear <= 1999;
+                else if (yearRange === '2000-2009') yearMatch = mYear >= 2000 && mYear <= 2009;
+                else if (yearRange === '2010-2019') yearMatch = mYear >= 2010 && mYear <= 2019;
+                else if (yearRange === '2020-2025') yearMatch = mYear >= 2020;
             }
 
             return regionMatch && genreMatch && yearMatch && mbtiMatch;
@@ -205,28 +412,36 @@
         grid.innerHTML = "";
 
         if (list.length === 0) {
-            grid.innerHTML = "<p style='width:100%; text-align:center; color:#666;'>没有找到符合条件的电影，请尝试放宽筛选条件。</p>";
+            grid.innerHTML = "<p style='width:100%; text-align:center; color:#666; margin-top:50px;'>没有找到符合条件的电影，请尝试放宽筛选条件。</p>";
             return;
         }
 
         list.forEach(movie => {
             const card = document.createElement('div');
             card.className = 'movie-card';
-            const mbtiBadges = movie.mbti.map(type => `<span class="meta-tag tag-mbti">${type}</span>`).join('');
             
+            const mbtiStr = movie["推荐人群 (MBTI)"] || "";
+            const mbtiBadges = mbtiStr.split(/,|、/).map(s => s.trim()).filter(s=>s).map(type => `<span class="meta-tag tag-mbti">${type}</span>`).join('');
+            
+            const icon = movie["图标"] || "🎬";
+            const movieName = movie["电影名称"];
+            const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(movieName + ' 电影')}`;
+
             card.innerHTML = `
                 <div class="card-header">
-                    <span class="movie-title">${movie.title}</span>
-                    <span class="movie-year">${movie.year}</span>
+                    <a href="${googleSearchUrl}" target="_blank" class="movie-title-link" title="点击搜索: ${movieName}">
+                        ${icon} ${movieName}
+                    </a>
+                    <span class="movie-year">${movie["年份"]}</span>
                 </div>
                 <div class="card-body">
                     <div style="margin-bottom:8px;">
-                        <span class="meta-tag tag-region">${movie.region}</span>
-                        <span class="meta-tag" style="background:#333;">${movie.category.split('/')[0]}</span>
+                        <span class="meta-tag tag-region">${movie["地区"]}</span>
+                        <span class="meta-tag" style="background:#333;">${movie["类别"].split('/')[0]}</span>
                     </div>
-                    <div class="info-row"><strong>导演:</strong> ${movie.director}</div>
-                    <div class="info-row"><strong>主演:</strong> ${movie.actors}</div>
-                    <p class="desc">${movie.intro}</p>
+                    <div class="info-row"><strong>导演:</strong> ${movie["导演"]}</div>
+                    <div class="info-row"><strong>主演:</strong> ${movie["主演"]}</div>
+                    <p class="desc">${movie["简介"]}</p>
                     <div style="margin-top:10px;">${mbtiBadges}</div>
                 </div>
             `;
@@ -242,21 +457,39 @@
         applyFilters();
     }
 
-    function helpMeChoose() {
+    // isRetry = true 表示点击了“换一部”
+    function helpMeChoose(isRetry = false) {
         if (currentList.length === 0) {
             alert("当前没有电影可选，请重置筛选条件！");
             return;
         }
+        
         const randomIndex = Math.floor(Math.random() * currentList.length);
         const choice = currentList[randomIndex];
+        const icon = choice["图标"] || "🎬";
+        const movieName = choice["电影名称"];
+        const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(movieName + ' 电影')}`;
 
-        document.getElementById('modalTitle').innerText = choice.title;
-        document.getElementById('modalMeta').innerText = `${choice.year} | ${choice.region} | ${choice.director}`;
-        document.getElementById('modalDesc').innerText = choice.intro;
-        document.getElementById('modalMbti').innerText = `推荐给: ${choice.mbti.join(', ')}`;
+        // 更新弹窗内容
+        document.getElementById('modalIcon').innerText = icon;
+        
+        // 渲染可点击的标题
+        const titleContainer = document.getElementById('modalTitleContainer');
+        titleContainer.innerHTML = `
+            <a href="${googleSearchUrl}" target="_blank" class="modal-title-link" title="点击搜索">
+                ${movieName}
+            </a>
+        `;
 
-        const modal = document.getElementById('modal');
-        modal.style.display = 'flex';
+        document.getElementById('modalMeta').innerText = `${choice["年份"]} | ${choice["地区"]} | ${choice["导演"]}`;
+        document.getElementById('modalDesc').innerText = choice["简介"];
+        document.getElementById('modalMbti').innerText = `推荐给: ${choice["推荐人群 (MBTI)"]}`;
+
+        // 显示 Modal
+        if (!isRetry) {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'flex';
+        }
     }
 
     function closeModal() {
@@ -264,7 +497,10 @@
     }
     
     window.onclick = function(event) {
-        if (event.target == document.getElementById('modal')) closeModal();
+        const modal = document.getElementById('modal');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 </script>
 
