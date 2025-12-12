@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>今天看什么电影？</title>
+    <title>今天看什么电影</title>
     <style>
         :root {
             --bg-color: #121212;
@@ -27,7 +27,7 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* Header */
+        /* Header & Top Actions */
         header {
             background-color: #000;
             padding: 20px;
@@ -41,6 +41,28 @@
 
         h1 { margin: 0; font-size: 1.5rem; }
         p.subtitle { color: var(--text-sec); font-size: 0.9rem; margin-top: 5px; }
+
+        /* New Header Buttons */
+        .header-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .btn-text {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text-sec);
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 15px;
+        }
+        .btn-text:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+            background-color: #222;
+        }
 
         /* Filter Section */
         .filter-container {
@@ -64,7 +86,7 @@
             font-size: 0.9rem;
         }
 
-        /* Checkbox Styling (Hidden checkbox, styled label) */
+        /* Checkbox Styling */
         .filter-options {
             display: flex;
             flex-wrap: wrap;
@@ -72,9 +94,7 @@
             flex: 1;
         }
 
-        .check-btn {
-            display: none; /* Hide actual checkbox */
-        }
+        .check-btn { display: none; }
 
         .check-label {
             padding: 6px 12px;
@@ -89,19 +109,11 @@
 
         .check-label:hover { background-color: #444; }
 
-        /* Checked State */
         .check-btn:checked + .check-label {
             background-color: var(--tag-active);
             color: white;
             border-color: var(--tag-active);
             font-weight: bold;
-        }
-
-        /* MBTI Logic Note */
-        .logic-note {
-            font-size: 0.75rem;
-            color: #666;
-            margin-left: 10px;
         }
 
         /* Action Buttons */
@@ -137,7 +149,7 @@
         }
         button.btn-reset:hover { border-color: #aaa; color: #fff; }
 
-        /* Movie Grid & Card (Same as before) */
+        /* Movie Grid & Card */
         .movie-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -182,7 +194,6 @@
         .movie-title-link:hover { color: var(--highlight); border-bottom: 1px solid var(--highlight); }
 
         .movie-year { font-size: 0.9rem; color: var(--highlight); font-weight: bold; white-space: nowrap; margin-left: 10px; }
-
         .card-body { padding: 15px; flex-grow: 1; }
 
         .meta-tag {
@@ -197,7 +208,6 @@
         }
         .tag-region { background-color: #1f4068; color: #a6c1ee; }
         .tag-mbti { background-color: #4a1c40; color: #eeb8dd; border: 1px solid #752a65; }
-
         .info-row { margin-bottom: 8px; font-size: 0.9rem; color: var(--text-sec); }
         .desc {
             font-size: 0.9rem;
@@ -233,15 +243,31 @@
             animation: popIn 0.3s ease-out;
         }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
         .modal-emoji { font-size: 4rem; margin-bottom: 10px; display: block; }
         .modal-title-link { font-size: 1.8rem; margin-bottom: 10px; color: var(--highlight); display: inline-block; border-bottom: 1px solid transparent; }
         .modal-title-link:hover { border-bottom: 1px solid var(--highlight); opacity: 0.8; }
         .modal-info { margin-bottom: 20px; font-size: 1.1rem; color: var(--text-sec); }
         .modal-mbti { margin-top: 15px; font-weight: bold; color: var(--accent); }
-        .modal-actions { display: flex; gap: 15px; margin-top: 25px; justify-content: center; }
-        .btn-modal-action { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; border:none; }
+        
+        /* Modal Actions Grid */
+        .modal-actions { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr;
+            gap: 15px; 
+            margin-top: 25px; 
+        }
+        
+        /* Full width for the back button */
+        .btn-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .btn-modal-action { padding: 12px; border-radius: 8px; font-weight: bold; border:none; }
         .btn-change { background-color: #333; color: white; border: 1px solid #555; }
         .btn-confirm { background-color: var(--accent); color: white; }
+        .btn-back { background-color: transparent; border: 1px solid #555; color: #888; }
+        .btn-back:hover { background-color: #333; color: #fff; }
 
         .status-bar { text-align: center; padding: 10px; color: var(--text-sec); font-size: 0.9rem; }
     </style>
@@ -249,8 +275,13 @@
 <body>
 
 <header>
-    <h1>🎬 今天看什么电影？</h1>
-    <p class="subtitle">@ian233</p>
+    <h1>🎬 今天看什么电影</h1>
+    <p class="subtitle">@ian233 </p>
+    
+    <div class="header-actions">
+        <button class="btn-text" onclick="shareToFriends()">📤 分享给朋友</button>
+        <button class="btn-text" onclick="contactAuthor()">💬 反馈给作者</button>
+    </div>
 </header>
 
 <div class="filter-container">
@@ -259,16 +290,12 @@
         <div class="filter-options">
             <input type="checkbox" id="reg1" name="region" value="大陆" class="check-btn" onchange="applyFilters()">
             <label for="reg1" class="check-label">🇨🇳 大陆</label>
-            
             <input type="checkbox" id="reg2" name="region" value="香港" class="check-btn" onchange="applyFilters()">
             <label for="reg2" class="check-label">🇭🇰 香港</label>
-            
             <input type="checkbox" id="reg3" name="region" value="台湾" class="check-btn" onchange="applyFilters()">
             <label for="reg3" class="check-label">🇹🇼 台湾</label>
-            
             <input type="checkbox" id="reg4" name="region" value="欧美" class="check-btn" onchange="applyFilters()">
             <label for="reg4" class="check-label">🇺🇸 欧美</label>
-            
             <input type="checkbox" id="reg5" name="region" value="其他" class="check-btn" onchange="applyFilters()">
             <label for="reg5" class="check-label">🇯🇵 其他</label>
         </div>
@@ -279,27 +306,20 @@
         <div class="filter-options">
             <input type="checkbox" id="cat1" name="genre" value="剧情" class="check-btn" onchange="applyFilters()">
             <label for="cat1" class="check-label">剧情</label>
-            
             <input type="checkbox" id="cat2" name="genre" value="喜剧" class="check-btn" onchange="applyFilters()">
             <label for="cat2" class="check-label">喜剧</label>
-            
             <input type="checkbox" id="cat3" name="genre" value="动作" class="check-btn" onchange="applyFilters()">
-            <label for="cat3" class="check-label">动作/武侠</label>
-            
+            <label for="cat3" class="check-label">动作</label>
             <input type="checkbox" id="cat4" name="genre" value="科幻" class="check-btn" onchange="applyFilters()">
             <label for="cat4" class="check-label">科幻</label>
-            
             <input type="checkbox" id="cat5" name="genre" value="悬疑" class="check-btn" onchange="applyFilters()">
-            <label for="cat5" class="check-label">悬疑/犯罪</label>
-            
+            <label for="cat5" class="check-label">悬疑</label>
             <input type="checkbox" id="cat6" name="genre" value="爱情" class="check-btn" onchange="applyFilters()">
             <label for="cat6" class="check-label">爱情</label>
-            
             <input type="checkbox" id="cat7" name="genre" value="动画" class="check-btn" onchange="applyFilters()">
             <label for="cat7" class="check-label">动画</label>
-            
             <input type="checkbox" id="cat8" name="genre" value="惊悚" class="check-btn" onchange="applyFilters()">
-            <label for="cat8" class="check-label">惊悚/恐怖</label>
+            <label for="cat8" class="check-label">惊悚</label>
         </div>
     </div>
 
@@ -308,62 +328,39 @@
         <div class="filter-options">
             <input type="checkbox" id="year1" name="year" value="2020-2025" class="check-btn" onchange="applyFilters()">
             <label for="year1" class="check-label">2020s</label>
-            
             <input type="checkbox" id="year2" name="year" value="2010-2019" class="check-btn" onchange="applyFilters()">
             <label for="year2" class="check-label">2010s</label>
-            
             <input type="checkbox" id="year3" name="year" value="2000-2009" class="check-btn" onchange="applyFilters()">
             <label for="year3" class="check-label">2000s</label>
-            
             <input type="checkbox" id="year4" name="year" value="1990-1999" class="check-btn" onchange="applyFilters()">
             <label for="year4" class="check-label">1990s</label>
-            
             <input type="checkbox" id="year5" name="year" value="pre-1990" class="check-btn" onchange="applyFilters()">
             <label for="year5" class="check-label">经典老片</label>
         </div>
     </div>
 
     <div class="filter-group">
-        <span class="filter-label">
-            MBTI:<br>
-            <span style="font-size:0.7em; color:#666; font-weight:normal;">(交集)</span>
-        </span>
+        <span class="filter-label">MBTI:<br><span style="font-size:0.7em; color:#666; font-weight:normal;">(交集)</span></span>
         <div class="filter-options">
-            <input type="checkbox" id="m1" name="mbti" value="INTJ" class="check-btn" onchange="applyFilters()">
-            <label for="m1" class="check-label">INTJ</label>
-            <input type="checkbox" id="m2" name="mbti" value="INTP" class="check-btn" onchange="applyFilters()">
-            <label for="m2" class="check-label">INTP</label>
-            <input type="checkbox" id="m3" name="mbti" value="ENTJ" class="check-btn" onchange="applyFilters()">
-            <label for="m3" class="check-label">ENTJ</label>
-            <input type="checkbox" id="m4" name="mbti" value="ENTP" class="check-btn" onchange="applyFilters()">
-            <label for="m4" class="check-label">ENTP</label>
+            <input type="checkbox" id="m1" name="mbti" value="INTJ" class="check-btn" onchange="applyFilters()"><label for="m1" class="check-label">INTJ</label>
+            <input type="checkbox" id="m2" name="mbti" value="INTP" class="check-btn" onchange="applyFilters()"><label for="m2" class="check-label">INTP</label>
+            <input type="checkbox" id="m3" name="mbti" value="ENTJ" class="check-btn" onchange="applyFilters()"><label for="m3" class="check-label">ENTJ</label>
+            <input type="checkbox" id="m4" name="mbti" value="ENTP" class="check-btn" onchange="applyFilters()"><label for="m4" class="check-label">ENTP</label>
             
-            <input type="checkbox" id="m5" name="mbti" value="INFJ" class="check-btn" onchange="applyFilters()">
-            <label for="m5" class="check-label">INFJ</label>
-            <input type="checkbox" id="m6" name="mbti" value="INFP" class="check-btn" onchange="applyFilters()">
-            <label for="m6" class="check-label">INFP</label>
-            <input type="checkbox" id="m7" name="mbti" value="ENFJ" class="check-btn" onchange="applyFilters()">
-            <label for="m7" class="check-label">ENFJ</label>
-            <input type="checkbox" id="m8" name="mbti" value="ENFP" class="check-btn" onchange="applyFilters()">
-            <label for="m8" class="check-label">ENFP</label>
+            <input type="checkbox" id="m5" name="mbti" value="INFJ" class="check-btn" onchange="applyFilters()"><label for="m5" class="check-label">INFJ</label>
+            <input type="checkbox" id="m6" name="mbti" value="INFP" class="check-btn" onchange="applyFilters()"><label for="m6" class="check-label">INFP</label>
+            <input type="checkbox" id="m7" name="mbti" value="ENFJ" class="check-btn" onchange="applyFilters()"><label for="m7" class="check-label">ENFJ</label>
+            <input type="checkbox" id="m8" name="mbti" value="ENFP" class="check-btn" onchange="applyFilters()"><label for="m8" class="check-label">ENFP</label>
             
-            <input type="checkbox" id="m9" name="mbti" value="ISTJ" class="check-btn" onchange="applyFilters()">
-            <label for="m9" class="check-label">ISTJ</label>
-            <input type="checkbox" id="m10" name="mbti" value="ISFJ" class="check-btn" onchange="applyFilters()">
-            <label for="m10" class="check-label">ISFJ</label>
-            <input type="checkbox" id="m11" name="mbti" value="ESTJ" class="check-btn" onchange="applyFilters()">
-            <label for="m11" class="check-label">ESTJ</label>
-            <input type="checkbox" id="m12" name="mbti" value="ESFJ" class="check-btn" onchange="applyFilters()">
-            <label for="m12" class="check-label">ESFJ</label>
+            <input type="checkbox" id="m9" name="mbti" value="ISTJ" class="check-btn" onchange="applyFilters()"><label for="m9" class="check-label">ISTJ</label>
+            <input type="checkbox" id="m10" name="mbti" value="ISFJ" class="check-btn" onchange="applyFilters()"><label for="m10" class="check-label">ISFJ</label>
+            <input type="checkbox" id="m11" name="mbti" value="ESTJ" class="check-btn" onchange="applyFilters()"><label for="m11" class="check-label">ESTJ</label>
+            <input type="checkbox" id="m12" name="mbti" value="ESFJ" class="check-btn" onchange="applyFilters()"><label for="m12" class="check-label">ESFJ</label>
             
-            <input type="checkbox" id="m13" name="mbti" value="ISTP" class="check-btn" onchange="applyFilters()">
-            <label for="m13" class="check-label">ISTP</label>
-            <input type="checkbox" id="m14" name="mbti" value="ISFP" class="check-btn" onchange="applyFilters()">
-            <label for="m14" class="check-label">ISFP</label>
-            <input type="checkbox" id="m15" name="mbti" value="ESTP" class="check-btn" onchange="applyFilters()">
-            <label for="m15" class="check-label">ESTP</label>
-            <input type="checkbox" id="m16" name="mbti" value="ESFP" class="check-btn" onchange="applyFilters()">
-            <label for="m16" class="check-label">ESFP</label>
+            <input type="checkbox" id="m13" name="mbti" value="ISTP" class="check-btn" onchange="applyFilters()"><label for="m13" class="check-label">ISTP</label>
+            <input type="checkbox" id="m14" name="mbti" value="ISFP" class="check-btn" onchange="applyFilters()"><label for="m14" class="check-label">ISFP</label>
+            <input type="checkbox" id="m15" name="mbti" value="ESTP" class="check-btn" onchange="applyFilters()"><label for="m15" class="check-label">ESTP</label>
+            <input type="checkbox" id="m16" name="mbti" value="ESFP" class="check-btn" onchange="applyFilters()"><label for="m16" class="check-label">ESFP</label>
         </div>
     </div>
 
@@ -380,14 +377,17 @@
 <div class="modal-overlay" id="modal">
     <div class="modal-content">
         <span class="modal-emoji" id="modalIcon">🍿</span>
-        <h3 style="color:#888; margin-bottom: 5px;">推荐您今晚观看：</h3>
+        <h3 style="color:#888; margin-bottom: 5px;">推荐您观看：</h3>
         <div id="modalTitleContainer"></div>
         <div class="modal-info" id="modalMeta">年份 | 导演</div>
         <p class="desc" id="modalDesc">简介...</p>
         <div class="modal-mbti" id="modalMbti">推荐给: INTJ</div>
+        
         <div class="modal-actions">
             <button class="btn-modal-action btn-change" onclick="helpMeChoose(true)">🔄 不喜欢？换一部</button>
             <button id="btnGoWatch" class="btn-modal-action btn-confirm">👌 好的，我去看看</button>
+            
+            <button class="btn-modal-action btn-back btn-full-width" onclick="closeModal()">🔙 返回主界面</button>
         </div>
     </div>
 </div>
@@ -406,7 +406,21 @@
         }
     };
 
-    // 获取某一组多选框选中的值
+    // 新增：分享功能
+    function shareToFriends() {
+        const text = "这个网站作者挺无聊的，你快去看看：https://ianhao9397.github.io/movie/ ";
+        navigator.clipboard.writeText(text).then(() => {
+            alert("已复制到剪贴板：\n" + text);
+        }).catch(err => {
+            alert("复制失败");
+        });
+    }
+
+    // 新增：反馈功能
+    function contactAuthor() {
+        alert("请联系 微博@ian233");
+    }
+
     function getSelectedValues(name) {
         const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
         return Array.from(checkboxes).map(cb => cb.value);
@@ -426,7 +440,7 @@
             const mYear = parseInt(movie["年份"]);
             const mMbti = movie["推荐人群 (MBTI)"] || "";
 
-            // 1. 地区 (并集 OR): 如果没选，默认全匹配；如果选了，电影必须包含其中至少一个
+            // 1. 地区 (OR)
             let regionMatch = true;
             if (selectedRegions.length > 0) {
                 regionMatch = selectedRegions.some(region => {
@@ -439,13 +453,13 @@
                 });
             }
 
-            // 2. 类别 (并集 OR)
+            // 2. 类别 (OR)
             let genreMatch = true;
             if (selectedGenres.length > 0) {
                 genreMatch = selectedGenres.some(genre => mCategory.includes(genre));
             }
 
-            // 3. 年份 (并集 OR)
+            // 3. 年份 (OR)
             let yearMatch = true;
             if (selectedYears.length > 0) {
                 yearMatch = selectedYears.some(range => {
@@ -458,8 +472,7 @@
                 });
             }
 
-            // 4. MBTI (交集 AND): 必须包含所有选中的人格
-            // 如果没选，返回 true；如果选了，必须每一个选中的 MBTI 都在电影的标签里
+            // 4. MBTI (AND)
             let mbtiMatch = true;
             if (selectedMbtis.length > 0) {
                 mbtiMatch = selectedMbtis.every(mbti => mMbti.includes(mbti));
