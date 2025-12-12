@@ -276,7 +276,7 @@
 
 <header>
     <h1>🎬 今天看什么电影</h1>
-    <p class="subtitle">@ian233 </p>
+    <p class="subtitle"> 值得一看的400部电影 </p>
     
     <div class="header-actions">
         <button class="btn-text" onclick="shareToFriends()">📤 分享给朋友</button>
@@ -408,7 +408,7 @@
 
     // 新增：分享功能
     function shareToFriends() {
-        const text = "这个网站作者挺无聊的，你快去看看：https://ianhao9397.github.io/movie/ ";
+        const text = "选择困难症选电影可以看看这个网站：https://ianhao9397.github.io/movie/ ";
         navigator.clipboard.writeText(text).then(() => {
             alert("已复制到剪贴板：\n" + text);
         }).catch(err => {
@@ -418,7 +418,7 @@
 
     // 新增：反馈功能
     function contactAuthor() {
-        alert("请联系 微博@ian233");
+        alert("联系微博@ian233");
     }
 
     function getSelectedValues(name) {
